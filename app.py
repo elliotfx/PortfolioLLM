@@ -60,7 +60,7 @@ EARTH_3D_COMPONENT = """
     });
     
     const starsVertices = [];
-    for (let i = 0; i < 12000; i++) {
+    for (let i = 0; i < 5000; i++) {
         const x = (Math.random() - 0.5) * 1500;
         const y = (Math.random() - 0.5) * 1500;
         const z = (Math.random() - 0.5) * 1500;
@@ -70,8 +70,8 @@ EARTH_3D_COMPONENT = """
     const stars = new THREE.Points(starsGeometry, starsMaterial);
     scene.add(stars);
     
-    // Terre
-    const earthGeometry = new THREE.SphereGeometry(5, 64, 64);
+    // Terre (géométrie simplifiée pour meilleures performances)
+    const earthGeometry = new THREE.SphereGeometry(5, 32, 32);
     
     // Texture de la Terre (NASA Blue Marble)
     const textureLoader = new THREE.TextureLoader();
@@ -93,8 +93,8 @@ EARTH_3D_COMPONENT = """
     const earth = new THREE.Mesh(earthGeometry, earthMaterial);
     scene.add(earth);
     
-    // Atmosphère (glow effect)
-    const atmosphereGeometry = new THREE.SphereGeometry(5.3, 64, 64);
+    // Atmosphère (glow effect - géométrie simplifiée)
+    const atmosphereGeometry = new THREE.SphereGeometry(5.3, 32, 32);
     const atmosphereMaterial = new THREE.ShaderMaterial({
         vertexShader: `
             varying vec3 vNormal;
@@ -129,7 +129,7 @@ EARTH_3D_COMPONENT = """
     // Contrôles orbitaux - sur le canvas dans le parent
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
+    controls.dampingFactor = 0.08;
     controls.enableZoom = true;
     controls.minDistance = 8;
     controls.maxDistance = 40;
@@ -216,7 +216,9 @@ st.markdown("""
             inset 0 -2px 4px rgba(0, 0, 0, 0.2) !important;
         padding: 2rem 1.5rem !important;
         margin: 0 !important;
-        height: auto !important;
+        max-height: 95vh !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
     }
     
     /* Titre avec gradient */

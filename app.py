@@ -126,16 +126,44 @@ EARTH_3D_COMPONENT = """
     sunLight.position.set(50, 30, 50);
     scene.add(sunLight);
     
-    // LUNE - en orbite autour de la Terre (AGRANDIE pour meilleure visibilité)
-    const moonGeometry = new THREE.SphereGeometry(2.5, 20, 20);
-    const moonTexture = textureLoader.load('https://unpkg.com/three-globe/example/img/moon.jpg');
+    // LUNE - texture procédurale cratérisée (pour éviter problèmes de chargement)
+    const moonGeometry = new THREE.SphereGeometry(2.5, 32, 32);
     const moonMaterial = new THREE.MeshPhongMaterial({
-        map: moonTexture,
-        shininess: 5
+        color: 0xb0b0b0,
+        bumpScale: 0.3,
+        shininess: 2
     });
     const moon = new THREE.Mesh(moonGeometry, moonMaterial);
-    moon.position.set(16, 0, 0);  // Distance de la Terre
+    moon.position.set(16, 0, 0);
     scene.add(moon);
+    
+    // VAISSEAUX SPATIAUX - 6 vaisseaux faisant allers-retours Terre-Lune
+    const spaceships = [];
+    for (let i = 0; i < 6; i++) {
+        const shipGroup = new THREE.Group();
+        
+        // Corps (cône orienté)
+        const coneGeo = new THREE.ConeGeometry(0.1, 0.35, 6);
+        const shipMat = new THREE.MeshPhongMaterial({
+            color: i % 2 === 0 ? 0x4488ff : 0xff8844,
+            emissive: i % 2 === 0 ? 0x2244aa : 0xaa4422,
+            emissiveIntensity: 0.6,
+            shininess: 100
+        });
+        const cone = new THREE.Mesh(coneGeo, shipMat);
+        cone.rotation.x = Math.PI / 2;
+        shipGroup.add(cone);
+        
+        // Données pour l'animation
+        shipGroup.userData = {
+            speed: 0.0003 + Math.random() * 0.0002,
+            offset: (i / 6) * Math.PI * 2,
+            distance: 5 + i * 2
+        };
+        
+        scene.add(shipGroup);
+        spaceships.push(shipGroup);
+    }
     
     // SOLEIL - sphère brillante au loin
     const sunGeometry = new THREE.SphereGeometry(8, 24, 24);
@@ -197,6 +225,24 @@ EARTH_3D_COMPONENT = """
         moon.position.x = Math.cos(time) * 16;
         moon.position.z = Math.sin(time) * 16;
         moon.rotation.y += 0.0005;
+        
+        // Animation des vaisseaux spatiaux (allers-retours Terre-Lune)
+        spaceships.forEach((ship) => {
+            const t = Date.now() * ship.userData.speed + ship.userData.offset;
+            
+            // Position qui oscille entre Terre et Lune
+            const progress = (Math.sin(t) + 1) / 2; // 0 à 1
+            const dist = ship.userData.distance + progress * 11; // 5-16 unités
+            
+            // Position en orbite autour de la Terre
+            const angle = t * 0.5;
+            ship.position.x = Math.cos(angle) * dist;
+            ship.position.y = Math.sin(t * 0.3) * 2; // Variation verticale
+            ship.position.z = Math.sin(angle) * dist;
+            
+            // Orienter le vaisseau dans la direction du mouvement
+            ship.lookAt(moon.position);
+        });
         
         controls.update();
         renderer.render(scene, camera);

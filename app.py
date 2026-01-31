@@ -183,7 +183,7 @@ st.markdown("""
     }
     
     .block-container {
-        padding: 2rem 1.5rem !important;
+        padding: 1rem 1.5rem !important;
         max-width: 100% !important;
     }
     
@@ -214,9 +214,9 @@ st.markdown("""
             0 15px 50px rgba(102, 126, 234, 0.15),
             inset 0 2px 4px rgba(255, 255, 255, 0.2),
             inset 0 -2px 4px rgba(0, 0, 0, 0.2) !important;
-        padding: 2rem 1.5rem !important;
+        padding: 1.5rem 1.2rem !important;
         margin: 0 !important;
-        max-height: 95vh !important;
+        max-height: 92vh !important;
         overflow-y: auto !important;
         overflow-x: hidden !important;
     }

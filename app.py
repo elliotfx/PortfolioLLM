@@ -126,6 +126,53 @@ EARTH_3D_COMPONENT = """
     sunLight.position.set(50, 30, 50);
     scene.add(sunLight);
     
+    // LUNE - en orbite autour de la Terre
+    const moonGeometry = new THREE.SphereGeometry(1.3, 16, 16);
+    const moonTexture = textureLoader.load('https://unpkg.com/three-globe/example/img/moon.jpg');
+    const moonMaterial = new THREE.MeshPhongMaterial({
+        map: moonTexture,
+        shininess: 5
+    });
+    const moon = new THREE.Mesh(moonGeometry, moonMaterial);
+    moon.position.set(15, 0, 0);  // Distance de la Terre
+    scene.add(moon);
+    
+    // SOLEIL - sphère brillante au loin
+    const sunGeometry = new THREE.SphereGeometry(8, 24, 24);
+    const sunMaterial = new THREE.MeshBasicMaterial({
+        color: 0xffdd88,
+        emissive: 0xffaa00,
+        emissiveIntensity: 1.5
+    });
+    const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+    sun.position.set(150, 80, 150);
+    scene.add(sun);
+    
+    // Glow effect pour le Soleil
+    const sunGlowGeometry = new THREE.SphereGeometry(10, 24, 24);
+    const sunGlowMaterial = new THREE.ShaderMaterial({
+        vertexShader: `
+            varying vec3 vNormal;
+            void main() {
+                vNormal = normalize(normalMatrix * normal);
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `,
+        fragmentShader: `
+            varying vec3 vNormal;
+            void main() {
+                float intensity = pow(0.8 - dot(vNormal, vec3(0.0, 0.0, 1.0)), 2.0);
+                gl_FragColor = vec4(1.0, 0.8, 0.3, 1.0) * intensity;
+            }
+        `,
+        blending: THREE.AdditiveBlending,
+        side: THREE.BackSide,
+        transparent: true
+    });
+    const sunGlow =new THREE.Mesh(sunGlowGeometry, sunGlowMaterial);
+    sunGlow.position.copy(sun.position);
+    scene.add(sunGlow);
+    
     // Contrôles orbitaux - sur le canvas dans le parent
     const controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
@@ -144,6 +191,12 @@ EARTH_3D_COMPONENT = """
         // Rotation lente de la Terre
         earth.rotation.y += 0.0008;
         stars.rotation.y += 0.0001;
+        
+        // Orbite de la Lune autour de la Terre
+        const time = Date.now() * 0.0002;
+        moon.position.x = Math.cos(time) * 15;
+        moon.position.z = Math.sin(time) * 15;
+        moon.rotation.y += 0.0005;
         
         controls.update();
         renderer.render(scene, camera);

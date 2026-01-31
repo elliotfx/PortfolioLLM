@@ -126,15 +126,15 @@ EARTH_3D_COMPONENT = """
     sunLight.position.set(50, 30, 50);
     scene.add(sunLight);
     
-    // LUNE - en orbite autour de la Terre
-    const moonGeometry = new THREE.SphereGeometry(1.3, 16, 16);
+    // LUNE - en orbite autour de la Terre (AGRANDIE pour meilleure visibilité)
+    const moonGeometry = new THREE.SphereGeometry(2.5, 20, 20);
     const moonTexture = textureLoader.load('https://unpkg.com/three-globe/example/img/moon.jpg');
     const moonMaterial = new THREE.MeshPhongMaterial({
         map: moonTexture,
         shininess: 5
     });
     const moon = new THREE.Mesh(moonGeometry, moonMaterial);
-    moon.position.set(15, 0, 0);  // Distance de la Terre
+    moon.position.set(16, 0, 0);  // Distance de la Terre
     scene.add(moon);
     
     // SOLEIL - sphère brillante au loin
@@ -194,8 +194,8 @@ EARTH_3D_COMPONENT = """
         
         // Orbite de la Lune autour de la Terre
         const time = Date.now() * 0.0002;
-        moon.position.x = Math.cos(time) * 15;
-        moon.position.z = Math.sin(time) * 15;
+        moon.position.x = Math.cos(time) * 16;
+        moon.position.z = Math.sin(time) * 16;
         moon.rotation.y += 0.0005;
         
         controls.update();

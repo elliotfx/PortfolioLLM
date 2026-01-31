@@ -1,5 +1,29 @@
+# Environnement et configuration
 .env
+.env.local
 .venv
+venv/
+
+# Python cache
 __pycache__
+*.pyc
+*.pyo
 .pytest_cache
-./documents
+
+# Fichiers volumineux et exécutables
+*.exe
+*.msi
+*.dmg
+*.zip
+*.rar
+*.7z
+*.tar.gz
+
+# Documents PDF volumineux
+documents/*.pdf
+*.pdf
+
+# Images et médias volumineux (mais garder les assets du portfolio)
+!assets/*.png
+!assets/*.jpg
+!assets/*.gif

@@ -381,11 +381,7 @@ with col_chat:
     chat_container = st.container()
     
     with chat_container:
-        # Header
-        st.markdown('<h1 class="main-title">🚀 Portfolio Interactif</h1>', unsafe_allow_html=True)
-        st.markdown('<p class="subtitle">Explorez mon univers professionnel</p>', unsafe_allow_html=True)
-        
-        st.divider()
+
         
         # Questions prédéfinies - liste verticale
         # Utilisation de &nbsp; (espace insécable) pour éviter les orphelins

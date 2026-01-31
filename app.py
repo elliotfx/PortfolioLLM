@@ -51,24 +51,59 @@ EARTH_3D_COMPONENT = """
     renderer.domElement.style.cursor = 'grab';
     container.appendChild(renderer.domElement);
     
-    // Étoiles en arrière-plan
-    const starsGeometry = new THREE.BufferGeometry();
-    const starsMaterial = new THREE.PointsMaterial({
+    // Étoiles blanches principales (couche lointaine)
+    const starsGeometry1 = new THREE.BufferGeometry();
+    const starsMaterial1 = new THREE.PointsMaterial({
         color: 0xffffff,
-        size: 0.12,
+        size: 0.15,
         sizeAttenuation: true
     });
+    const starsVertices1 = [];
+    for (let i = 0; i < 4000; i++) {
+        const x = (Math.random() - 0.5) * 2000;
+        const y = (Math.random() - 0.5) * 2000;
+        const z = (Math.random() - 0.5) * 2000;
+        starsVertices1.push(x, y, z);
+    }
+    starsGeometry1.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices1, 3));
+    const stars1 = new THREE.Points(starsGeometry1, starsMaterial1);
+    scene.add(stars1);
     
-    const starsVertices = [];
-    for (let i = 0; i < 5000; i++) {
+    // Étoiles bleues (couche moyenne)
+    const starsGeometry2 = new THREE.BufferGeometry();
+    const starsMaterial2 = new THREE.PointsMaterial({
+        color: 0xaaccff,
+        size: 0.18,
+        sizeAttenuation: true
+    });
+    const starsVertices2 = [];
+    for (let i = 0; i < 3000; i++) {
+        const x = (Math.random() - 0.5) * 1800;
+        const y = (Math.random() - 0.5) * 1800;
+        const z = (Math.random() - 0.5) * 1800;
+        starsVertices2.push(x, y, z);
+    }
+    starsGeometry2.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices2, 3));
+    const stars2 = new THREE.Points(starsGeometry2, starsMaterial2);
+    scene.add(stars2);
+    
+    // Étoiles jaune-orange (couche proche)
+    const starsGeometry3 = new THREE.BufferGeometry();
+    const starsMaterial3 = new THREE.PointsMaterial({
+        color: 0xffddaa,
+        size: 0.2,
+        sizeAttenuation: true
+    });
+    const starsVertices3 = [];
+    for (let i = 0; i < 3000; i++) {
         const x = (Math.random() - 0.5) * 1500;
         const y = (Math.random() - 0.5) * 1500;
         const z = (Math.random() - 0.5) * 1500;
-        starsVertices.push(x, y, z);
+        starsVertices3.push(x, y, z);
     }
-    starsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices, 3));
-    const stars = new THREE.Points(starsGeometry, starsMaterial);
-    scene.add(stars);
+    starsGeometry3.setAttribute('position', new THREE.Float32BufferAttribute(starsVertices3, 3));
+    const stars3 = new THREE.Points(starsGeometry3, starsMaterial3);
+    scene.add(stars3);
     
     // Terre (géométrie simplifiée pour meilleures performances)
     const earthGeometry = new THREE.SphereGeometry(5, 32, 32);
@@ -126,15 +161,15 @@ EARTH_3D_COMPONENT = """
     sunLight.position.set(50, 30, 50);
     scene.add(sunLight);
     
-    // LUNE - en orbite autour de la Terre
-    const moonGeometry = new THREE.SphereGeometry(1.3, 16, 16);
+    // LUNE - en orbite autour de la Terre (AGRANDIE)
+    const moonGeometry = new THREE.SphereGeometry(3.2, 20, 20);
     const moonTexture = textureLoader.load('https://unpkg.com/three-globe/example/img/moon.jpg');
     const moonMaterial = new THREE.MeshPhongMaterial({
         map: moonTexture,
         shininess: 5
     });
     const moon = new THREE.Mesh(moonGeometry, moonMaterial);
-    moon.position.set(15, 0, 0);  // Distance de la Terre
+    moon.position.set(18, 0, 0);  // Distance de la Terre (légèrement plus loin)
     scene.add(moon);
     
     // SOLEIL - sphère brillante au loin

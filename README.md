@@ -134,15 +134,3 @@ Pour adapter le portfolio à votre profil :
    ```bash
    python -m src.indexing
    ```
-
----
-
-## 📄 Licence
-
-Projet universitaire et personnel.
-
----
-
-<p align="center">
-  <strong>Fait avec ❤️ et 🤖</strong>
-</p>
